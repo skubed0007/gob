@@ -1,0 +1,254 @@
+{
+  name = firefox-browser
+  binary-at = firefox/firefox
+  version = 135.0
+  description = A fast, open-source web browser by Mozilla.
+  depends =
+  url = https://download-installer.cdn.mozilla.net/pub/firefox/releases/135.0/linux-x86_64/en-US/firefox-135.0.tar.xz
+  symlink-names = firefox
+}
+
+{
+  name = llvm
+  binary-at = LLVM-19.1.7-Linux-X64/bin/clang, LLVM-19.1.7-Linux-X64/bin/clang++, LLVM-19.1.7-Linux-X64/bin/llvm-ar, LLVM-19.1.7-Linux-X64/bin/llvm-as, LLVM-19.1.7-Linux-X64/bin/llvm-nm, LLVM-19.1.7-Linux-X64/bin/lld
+  version = 19.1.7
+  description = A collection of modular and reusable compiler and toolchain technologies.
+  depends =
+  url = https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/LLVM-19.1.7-Linux-X64.tar.xz
+  symlink-names = clang, clang++, llvm-ar, llvm-as, llvm-nm, lld
+}
+
+{
+  name = neovim
+  binary-at = nvim-linux-x86_64/bin/nvim
+  version = 0.10.4
+  description = A hyperextensible Vim-based text editor with modern features.
+  depends = 
+  url = https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-x86_64.tar.gz
+  symlink-names = nvim
+}
+
+{
+  name = vim
+  binary-at = src/vim
+  version = 8.2.4383
+  description = A highly configurable text editor aimed at efficiency.
+  depends =
+  url = https://anduin.linuxfromscratch.org/BLFS/vim/vim-8.2.4383.tar.gz
+  symlink-names = vim
+}
+
+{
+  name = nginx
+  binary-at = objs/nginx
+  version = 1.27.4
+  description = A high-performance web server and reverse proxy.
+  depends = openssl, pcre, zlib
+  url = https://nginx.org/download/nginx-1.27.4.tar.gz
+  symlink-names = nginx
+}
+
+{
+  name = git
+  binary-at = git, bin/git
+  version = 2.48.1
+  description = A distributed version control system.
+  depends =
+  url = https://codeload.github.com/git/git/tar.gz/refs/tags/v2.48.1
+  symlink-names = git
+}
+
+{
+  name = floorp-browser
+  binary-at = floorp/floorp
+  version = 11.23.0
+  description = A privacy focused, Firefox-based customizable browser!
+  depends =
+  url = https://github.com/Floorp-Projects/Floorp/releases/download/v11.23.0/floorp-11.23.0.linux-x86_64.tar.bz2
+  symlink-names = floorp
+  desktop = true
+  icon = https://avatars.githubusercontent.com/u/94953125?s=200&v=4
+}
+
+{
+  name = yt-grab
+  binary-at = ytgrab-gcc
+  version = 1.0.0
+  description = A youtube video downloader
+  url = https://raw.githubusercontent.com/skubed0007/yt-grab/main/bins/ytgrab-gcc
+  extractable = false
+  symlink-names = ytgui
+  desktop = true
+  icon = https://avatars.githubusercontent.com/u/94953125?s=200&v=4
+
+}
+{
+  name = ungoogled-chromium
+  binary-at = ungoogled-chromium/chrome
+  version = 131.0.6778.264-1
+  description = A privacy-enhanced version of Chromium without Google integration.
+  depends =
+  url = https://github.com/ungoogled-software/ungoogled-chromium/releases/latest
+  symlink-names = ungoogled-chromium
+}
+
+{
+  name = libreoffice
+  binary-at = LibreOffice/program/soffice
+  version = 7.5.0
+  description = A powerful open‑source office suite including word processing, spreadsheets, and presentations.
+  depends =
+  url = https://download.documentfoundation.org/libreoffice/stable/7.5.0/deb/x86_64/LibreOffice_7.5.0_Linux_x86-64_deb.tar.gz
+  symlink-names = libreoffice, soffice
+}
+
+{
+  name = blender
+  binary-at = blender/blender
+  version = 3.6.0
+  description = A free and open‑source 3D creation suite for modeling, animation, rendering, and more.
+  depends =
+  url = https://download.blender.org/release/Blender3.6/blender-3.6.0-linux-x64.tar.xz
+  symlink-names = blender
+}
+
+{
+  name = vlc
+  binary-at = vlc/vlc
+  version = 3.0.18
+  description = A versatile open‑source media player that supports nearly every audio and video format.
+  depends =
+  url = https://get.videolan.org/vlc/3.0.18/linux/x86_64/vlc-3.0.18.tar.xz
+  symlink-names = vlc
+}
+
+{
+  name = docker
+  binary-at = docker/docker
+  version = 20.10.24
+  description = A platform for developing, shipping, and running applications in containers.
+  depends =
+  url = https://download.docker.com/linux/static/stable/x86_64/docker-20.10.24.tgz
+  symlink-names = docker
+}
+
+{
+  name = nodejs
+  binary-at = node-v18.17.1-linux-x64/bin/node
+  version = 18.17.1
+  description = A JavaScript runtime built on Chrome's V8 engine for building scalable network applications.
+  depends =
+  url = https://nodejs.org/dist/v18.17.1/node-v18.17.1-linux-x64.tar.xz
+  symlink-names = node, npm
+}
+
+{
+  name = obs-studio
+  binary-at = obs-studio/obs
+  version = 29.1.3
+  description = Open‑source software for video recording and live streaming.
+  depends =
+  url = https://cdn-fastly.obsproject.com/downloads/obs-studio-29.1.3.tar.xz
+  symlink-names = obs
+}
+
+{
+  name = cmake
+  binary-at = cmake/bin/cmake
+  version = 3.26.4
+  description = A cross‑platform build system to control the software compilation process.
+  depends =
+  url = https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.tar.gz
+  symlink-names = cmake
+}
+
+{
+  name = python
+  binary-at = Python-3.13.2/python
+  version = 3.13.2
+  description = A high‑level, interpreted programming language that emphasizes code readability.
+  depends =
+  url = https://www.python.org/ftp/python/3.13.2/Python-3.13.2.tar.xz
+  symlink-names = python3, python
+}
+
+{
+  name = ffmpeg
+  binary-at = ffmpeg/ffmpeg
+  version = 6.0
+  description = A complete multimedia framework to record, convert, and stream audio and video.
+  depends =
+  url = https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz
+  symlink-names = ffmpeg
+}
+
+{
+  name = gimp
+  binary-at = gimp-2.10/bin/gimp
+  version = 2.10.34
+  description = A free and open‑source raster graphics editor for image manipulation and editing.
+  depends =
+  url = https://download.gimp.org/pub/gimp/v2.10/gimp-2.10.34.tar.bz2
+  symlink-names = gimp
+}
+
+{
+  name = inkscape
+  binary-at = inkscape/inkscape
+  version = 1.3
+  description = A professional vector graphics editor for creating illustrations, diagrams, and logos.
+  depends =
+  url = https://media.inkscape.org/dl/resources/file/inkscape-1.3.tar.xz
+  symlink-names = inkscape
+}
+
+{
+  name = htop
+  binary-at = htop/htop
+  version = 3.2.2
+  description = An interactive process viewer for Unix systems with a user‑friendly ncurses interface.
+  depends =
+  url = https://hisham.hm/htop/releases/3.2.2/htop-3.2.2.tar.xz
+  symlink-names = htop
+}
+
+{
+  name = ranger
+  binary-at = ranger/ranger
+  version = 1.9.3
+  description = A terminal‑based file manager with vi‑style keybindings.
+  depends =
+  url = https://github.com/ranger/ranger/archive/refs/tags/v1.9.3.tar.gz
+  symlink-names = ranger
+}
+
+{
+  name = neofetch
+  binary-at = neofetch/neofetch
+  version = 7.1.0
+  description = A command‑line system information tool that displays an aesthetic overview of your system.
+  depends =
+  url = https://raw.githubusercontent.com/skubed0007/gobins/main/neofetch/neofetch
+  symlink-names = neofetch
+  extractable = false
+}
+
+{
+  name = zsh
+  binary-at = zsh-5.9/zsh
+  version = 5.9
+  description = An extended Bourne shell with many improvements and customizations.
+  depends =
+  url = https://cyfuture.dl.sourceforge.net/project/zsh/zsh/5.9/zsh-5.9.tar.xz?viasf=1
+  symlink-names = zsh
+}
+
+{
+  name = fish
+  binary-at = fish/bin/fish
+  version = 3.5.1
+  description = A smart and user‑friendly command‑line shell with syntax highlighting and autosuggestions.
+  depends =
+  url = https://github.com/fish-shell/fish-shell/releases/download/3.5.1/fish-3.5.1.tar.gz
+  symlink-names = fish
+}
