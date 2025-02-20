@@ -69,19 +69,6 @@
   desktop = true
   icon = https://avatars.githubusercontent.com/u/94953125?s=200&v=4
 }
-
-{
-  name = yt-grab
-  binary-at = ytgrab-gcc
-  version = 1.0.0
-  description = A youtube video downloader
-  url = https://raw.githubusercontent.com/skubed0007/yt-grab/main/bins/ytgrab-gcc
-  extractable = false
-  symlink-names = ytgui
-  desktop = true
-  icon = https://avatars.githubusercontent.com/u/94953125?s=200&v=4
-
-}
 {
   name = ungoogled-chromium
   binary-at = ungoogled-chromium/chrome
@@ -251,4 +238,198 @@
   depends =
   url = https://github.com/fish-shell/fish-shell/releases/download/3.5.1/fish-3.5.1.tar.gz
   symlink-names = fish
+}
+
+{
+  name = ytgrab
+  url = https://raw.githubusercontent.com/skubed0007/gobins/main/ytgrab
+  extractable = false
+  version = 1.0.0
+  symlink-names = ytgrab
+}
+
+{
+  name = thunderbird
+  binary-at = thunderbird/thunderbird
+  version = 115.0
+  description = A free and open‑source, cross‑platform email client by Mozilla.
+  depends =
+  url = https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/115.0/linux-x86_64/en-US/thunderbird-115.0.tar.bz2
+  symlink-names = thunderbird
+  desktop = true
+  icon = https://www.thunderbird.net/favicon.ico
+}
+
+{
+  name = keepassxc
+  binary-at = KeePassXC-2.7.1-x86_64.AppImage
+  version = 2.7.1
+  description = A community‑driven port of the “KeePass Password Safe” for secure password management.
+  depends =
+  url = https://github.com/keepassxreboot/keepassxc/releases/download/2.7.1/KeePassXC-2.7.1-x86_64.AppImage
+  symlink-names = keepassxc
+  desktop = true
+  icon = https://keepassxc.org/assets/img/keepassxc-icon.png
+  extractable = false
+}
+
+{
+  name = filezilla
+  binary-at = FileZilla_3.63.0_linux-x86_64/bin/filezilla
+  version = 3.63.0
+  description = A fast, reliable FTP/FTPS/SFTP client for file transfers.
+  depends =
+  url = https://download.filezilla-project.org/client/FileZilla_3.63.0_linux-x86_64.tar.bz2
+  symlink-names = filezilla
+  desktop = true
+}
+
+{
+  name = deluge
+  binary-at = deluge-2.1.3-x86_64.AppImage
+  version = 2.1.3
+  description = A lightweight, free, and open‑source BitTorrent client.
+  depends =
+  url = https://github.com/deluge-torrent/deluge/releases/download/2.1.3/deluge-2.1.3-x86_64.AppImage
+  symlink-names = deluge
+  desktop = true
+  extractable = false
+}
+
+{
+  name = krita
+  binary-at = krita-5.1.0-x86_64.appimage
+  version = 5.1.0
+  description = A professional free and open‑source digital painting application.
+  depends =
+  url = https://download.kde.org/stable/krita/5.1.0/krita-5.1.0-x86_64.appimage
+  symlink-names = krita
+  desktop = true
+  extractable = false
+}
+
+{
+  name = vscodium
+  binary-at = VSCodium-linux-x64/bin/codium
+  version = 1.79.2
+  description = A community‑driven, freely‑licensed distribution of Microsoft’s VS Code.
+  depends =
+  url = https://github.com/VSCodium/vscodium/releases/download/1.79.2/VSCodium-linux-x64-1.79.2.tar.gz
+  symlink-names = codium, vscodium
+  desktop = true
+  icon = https://vscodium.com/assets/logo.png
+}
+
+{
+  name = etcher
+  binary-at = balenaEtcher-1.7.9-x64/etcher-electron
+  version = 1.7.9
+  description = A powerful OS image flasher for USB drives and SD cards.
+  depends =
+  url = https://github.com/balena-io/etcher/releases/download/v1.7.9/balenaEtcher-1.7.9-x64.tar.gz
+  symlink-names = etcher
+  desktop = true
+  icon = https://www.balena.io/etcher/static/media/etcher-logo.1b8d33e9.svg
+}
+
+{
+  name = kdenlive
+  binary-at = kdenlive-22.12.3-x86_64.appimage
+  version = 22.12.3
+  description = A free and open‑source video editor for professional-grade editing.
+  depends =
+  url = https://files.kdenlive.org/kdenlive-22.12.3-x86_64.appimage
+  symlink-names = kdenlive
+  desktop = true
+  extractable = false
+}
+
+{
+  name = handbrake
+  binary-at = HandBrake-1.6.1-x86_64.AppImage
+  version = 1.6.1
+  description = An open‑source video transcoder for converting multimedia files.
+  depends =
+  url = https://github.com/HandBrake/HandBrake/releases/download/1.6.1/HandBrake-1.6.1-x86_64.AppImage
+  symlink-names = handbrake
+  desktop = true
+  extractable = false
+}
+
+{
+  name = mpv
+  binary-at = mpv-0.35.1-x86_64/mpv
+  version = 0.35.1
+  description = A free, open‑source, and cross‑platform media player with high performance.
+  depends =
+  url = https://github.com/mpv-player/mpv/releases/download/v0.35.1/mpv-0.35.1-x86_64.tar.xz
+  symlink-names = mpv
+  desktop = true
+}
+
+{
+  name = dbeaver
+  binary-at = dbeaver/dbeaver
+  version = 23.1.0
+  description = A free and open‑source universal database tool for developers and database administrators.
+  depends =
+  url = https://dbeaver.io/files/dbeaver-ce-23.1.0-linux.gtk.x86_64.tar.gz
+  symlink-names = dbeaver
+  desktop = true
+  icon = https://dbeaver.io/wp-content/themes/dbeaver/images/favicon.png
+}
+
+{
+  name = lazygit
+  binary-at = lazygit/lazygit
+  version = 0.38.0
+  description = A simple terminal‑based UI for Git commands to improve workflow.
+  depends =
+  url = https://github.com/jesseduffield/lazygit/releases/download/v0.38.0/lazygit_0.38.0_Linux_x86_64.tar.gz
+  symlink-names = lazygit
+  desktop = false
+}
+
+{
+  name = micro
+  binary-at = micro-2.0.10/micro
+  version = 2.0.10
+  description = A modern and intuitive terminal‑based text editor.
+  depends =
+  url = https://github.com/zyedidia/micro/releases/download/v2.0.10/micro-2.0.10-linux64.tar.gz
+  symlink-names = micro
+  desktop = false
+}
+
+{
+  name = exa
+  binary-at = exa-linux-x86_64/exa
+  version = 0.10.1
+  description = A modern replacement for “ls” with additional features and improved defaults.
+  depends =
+  url = https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+  symlink-names = exa
+  desktop = false
+}
+
+{
+  name = bat
+  binary-at = bat-v0.23.0-x86_64/bat
+  version = 0.23.0
+  description = A cat‑clone featuring syntax highlighting and Git integration.
+  depends =
+  url = https://github.com/sharkdp/bat/releases/download/v0.23.0/bat-v0.23.0-x86_64-unknown-linux-gnu.tar.gz
+  symlink-names = bat
+  desktop = false
+}
+
+{
+  name = ripgrep
+  binary-at = ripgrep-13.0.0-x86_64/ripgrep
+  version = 13.0.0
+  description = A line‑oriented search tool that recursively searches your current directory.
+  depends =
+  url = https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep-13.0.0-x86_64-unknown-linux-musl.tar.gz
+  symlink-names = rg, ripgrep
+  desktop = false
 }

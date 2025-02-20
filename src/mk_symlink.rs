@@ -26,8 +26,14 @@ pub fn create_symlinks(
         } else {
             format!("{}/{}_{}", bin_dir, &pkginfo.name, &pkginfo.name)
         };
-
-        let slink = format!("/usr/bin/{}", slinkn);
+        let host  = match sys_info::hostname() {
+            Ok(h) => h,
+            Err(e) => {
+                eprintln!("{}: {}", "Failed to get hostname".red().bold(), e);
+                "localhost".to_string()
+            }
+        };
+        let slink = format!("/home/{}/.gob/{}", host,slinkn);
 
         // Check if symlink exists and remove it
         if fs::symlink_metadata(&slink).is_ok() {
