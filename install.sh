@@ -5,7 +5,12 @@ if [ "$EUID" -ne 0 ]; then
     echo "ERROR: Please run as root or use sudo."
     exit 1
 fi
-
+# Check if /usr/local/bin/bob exists and remove it if it does
+if [ -f "/usr/local/bin/bob" ]; then
+    echo "Found existing /usr/local/bin/bob. Removing it..."
+    rm -f "/usr/local/bin/bob" || { echo "ERROR: Failed to remove /usr/local/bin/bob."; exit 1; }
+    echo "/usr/local/bin/bob removed successfully."
+fi
 # URL of the file to download
 FILE_URL="https://raw.githubusercontent.com/skubed0007/gob/main/bin/gob_gcc"
 
