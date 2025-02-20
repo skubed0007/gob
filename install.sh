@@ -1,5 +1,6 @@
 #!/bin/bash
-
+rm -rf ./bin
+mkdir bin
 # Check if the script is run as root
 if [ "$EUID" -ne 0 ]; then
     echo "ERROR: Please run as root or use sudo."
@@ -12,7 +13,7 @@ if [ -f "/usr/local/bin/bob" ]; then
     echo "/usr/local/bin/bob removed successfully."
 fi
 # URL of the file to download
-FILE_URL="https://raw.githubusercontent.com/skubed0007/gob/main/bin/gob_gcc"
+FILE_URL="https://raw.githubusercontent.com/skubed0007/gob/main/bin/gob"
 
 # Destination directory
 DEST_DIR="/usr/local/bin"
