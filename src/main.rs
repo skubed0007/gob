@@ -59,7 +59,7 @@ pub fn help() {
 async fn main() {
     let args: Vec<String> = args().collect();
 
-    if args.len() < 2{
+    if args.len() < 1{
         help();
         exit(1);
     }
