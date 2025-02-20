@@ -246,6 +246,7 @@
   extractable = false
   version = 1.0.0
   symlink-names = ytgrab
+  binary-at = ytgrab
 }
 
 {

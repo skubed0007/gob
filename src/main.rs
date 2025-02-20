@@ -5,7 +5,12 @@ use getpkg::getpkg;
 use mk_symlink::create_symlinks;
 use search::searchpkg;
 use std::{
-    env::args, fs::{self, File}, io::{read_to_string, Read}, os::unix::fs::PermissionsExt, path::Path, process::exit
+    env::{self, args},
+    fs::{self, File, OpenOptions},
+    io::{Read, Write},
+    os::unix::fs::PermissionsExt,
+    path::Path,
+    process::exit,
 };
 
 pub mod extract;
@@ -29,17 +34,73 @@ async fn main() {
             exit(1);
         }
     };
-    let indexfl = format!("/home/{}/.gobbled.gob", host);
+
+    let indexfl =
+        if let Some(indexfile_arg) = args.iter().position(|arg| arg.starts_with("indexfile=")) {
+            let indexfile = args[indexfile_arg]
+                .trim_start_matches("indexfile=")
+                .to_string();
+            if indexfile_arg > 0 {
+                search_terms.remove(indexfile_arg - 1);
+            }
+            indexfile
+        } else {
+            format!("/home/{}/.gobbled.gob", host)
+        };
     let installdir = format!("/home/{}/.gob", host);
     if !Path::new(&installdir).exists() {
-        match fs::create_dir(&installdir){
-            Ok(_) => println!("{}: {}", "Created install directory".green().bold(), installdir),
+        match fs::create_dir(&installdir) {
+            Ok(_) => println!(
+                "{}: {}",
+                "Created install directory".green().bold(),
+                installdir
+            ),
             Err(e) => {
-                eprintln!("{}: {}", "Failed to create install directory".red().bold(), e);
+                eprintln!(
+                    "{}: {}",
+                    "Failed to create install directory".red().bold(),
+                    e
+                );
                 exit(1);
             }
         }
     }
+    fn add_gob_to_path_for_host(host: &str) {
+        let path_var = env::var("PATH").unwrap_or_default();
+        let gob_path = format!("/home/{}/.gob", host);
+    
+        if !path_var.split(':').any(|p| p == gob_path) {
+            println!("you need to restart your terminal as gob just got added to your awesome shell's path");
+            let new_path = format!("{}:{}", gob_path, path_var);
+            env::set_var("PATH", &new_path);
+    
+            if let Ok(home) = env::var("HOME") {
+                let shell_configs = vec![
+                    (
+                        format!("{}/.bashrc", home),
+                        format!("\nexport PATH=\"{}:$PATH\"\n", gob_path),
+                    ),
+                    (
+                        format!("{}/.zshrc", home),
+                        format!("\nexport PATH=\"{}:$PATH\"\n", gob_path),
+                    ),
+                    (
+                        format!("{}/.config/fish/config.fish", home),
+                        format!("\nset -x PATH {} $PATH\n", gob_path),
+                    ),
+                ];
+    
+                for (config_path, export_line) in shell_configs {
+                    if let Ok(mut file) = OpenOptions::new().append(true).create(true).open(&config_path) {
+                        let _ = file.write_all(export_line.as_bytes());
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    add_gob_to_path_for_host(&host);
 
     match cmd.as_str() {
         "update" => {
@@ -173,82 +234,136 @@ async fn main() {
         }
         "local-install" => {}
         "install" => {
-            match fs::read_to_string(indexfl){
-
+            match fs::read_to_string(indexfl) {
                 Ok(pkgindex_str) => {
                     let mut pkgindex = parse_pkg_index::ppkgi(&pkgindex_str);
                     searchpkg(&search_terms, &pkgindex_str);
-                    for pkg in &mut pkgindex{
-                        if search_terms.iter().any(|term| &pkg.0 == &term){
+                    for pkg in &mut pkgindex {
+                        if search_terms.iter().any(|term| &pkg.0 == &term) {
                             //check if package is extractable and thus create proper install dir and links
+                            println!("{}: {}", "Installing package".green().bold(), &pkg.0);
                             let binfolder_file = {
-                                if pkg.1.extractable{
+                                if pkg.1.extractable {
                                     format!("{}/{}", installdir, &pkg.0)
-                                }
-                                else {
-                                    format!("{}/{}",installdir,&pkg.1.name)
+                                } else {
+                                    format!("{}/{}", installdir, &pkg.1.name)
                                 }
                             };
-                            match getpkg(&pkg.1).await{
+                            match getpkg(&pkg.1).await {
                                 Ok(tmpfp) => {
-                                    if pkg.1.extractable{
-                                        let extractdir = format!("/tmp/{}", &pkg.1.name);
-                                        match extract_package(&tmpfp,&extractdir){
+                                    if pkg.1.extractable {
+                                        // Construct the extraction directory path
+                                        let extractdir =
+                                            format!("/home/{}/.gob/{}", host, &pkg.1.name);
+
+                                        // Attempt to extract the package from tmpfp into extractdir
+                                        match extract_package(&tmpfp, &extractdir) {
                                             Ok(_) => {
+
+                                                // Create the final package installation directory path
                                                 let pkgidir = format!("{}/{}", installdir, &pkg.0);
+
+                                                // Setup copy options for copying the extracted directory
                                                 let mut options = CopyOptions::new();
                                                 options.overwrite = true;
                                                 options.copy_inside = true;
-                                                match copy(&extractdir, &pkgidir, &options){
+
+                                                // Copy the extracted package from extractdir to pkgidir
+                                                match copy(&extractdir, &pkgidir, &options) {
                                                     Ok(_) => {
-                                                        println!("{}: {}", "Package extracted successfully".green().bold(), &pkg.0);
-                                                        let symlinks =  create_symlinks(&pkgidir,pkg.1);
+                                                        println!(
+                                                            "{}: {}",
+                                                            "Package installed successfully"
+                                                                .green()
+                                                                .bold(),
+                                                            &pkg.0
+                                                        );
+
+                                                        // Remove the temporary package file
+                                                        match fs::remove_file(&tmpfp) {
+                                                            Ok(_) => {},
+                                                            Err(e) => eprintln!(
+                                                                "{}: {}",
+                                                                "Failed to remove temporary package file".red().bold(),
+                                                                e
+                                                            ),
+                                                        }
+
+                                                        // Create symlinks from the package installation directory
+                                                        let symlinks =
+                                                            create_symlinks(&pkgidir, pkg.1);
+                                                        // Set executable permissions for each created symlink
                                                         for ln in symlinks {
-                                                            if let Err(e) = fs::set_permissions(&ln, fs::Permissions::from_mode(0o755)) {
-                                                                eprintln!("{}: {}", "Failed to set executable permissions on symlink".red().bold(), e);
+                                                            match fs::set_permissions(&ln, fs::Permissions::from_mode(0o755)) {
+                                                                Ok(_) => {},
+                                                                Err(e) => eprintln!(
+                                                                    "{}: {}",
+                                                                    "Failed to set executable permissions on symlink".red().bold(),
+                                                                    e
+                                                                ),
                                                             }
                                                         }
                                                     }
                                                     Err(e) => {
-                                                        eprintln!("{}: {}", "Failed to copy extracted package".red().bold(), e);
+                                                        eprintln!(
+                                                            "{}: {}",
+                                                            "Failed to copy extracted package".red().bold(),
+                                                            e
+                                                        );
                                                         exit(1);
                                                     }
                                                 }
                                             }
                                             Err(e) => {
-                                                eprintln!("{}: {}", "Failed to extract package".red().bold(), e);
+                                                eprintln!(
+                                                    "{}: {}",
+                                                    "Failed to extract package".red().bold(),
+                                                    e
+                                                );
                                                 exit(1);
                                             }
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         let pkgdir = format!("{}/{}", installdir, &pkg.1.name);
-                                        match fs::write(&pkgdir, &tmpfp){
+
+                                        match fs::rename(&tmpfp, &pkgdir) {
                                             Ok(_) => {
-                                                println!("{}: {}", "Package downloaded successfully".green().bold(), &pkg.0);
-                                                let symlinks = create_symlinks(&pkgdir, pkg.1);
-                                                for ln in symlinks {
-                                                    if let Err(e) = fs::set_permissions(&ln, fs::Permissions::from_mode(0o755)) {
-                                                        eprintln!("{}: {}", "Failed to set executable permissions on symlink".red().bold(), e);
+                                                match fs::set_permissions(&pkgdir, fs::Permissions::from_mode(0o755)) {
+                                                    Ok(_) => println!("{}{}","Successfully installed package: ".green().bold(), &pkg.0),
+                                                    Err(e) => {
+                                                        eprintln!(
+                                                            "{}: {}",
+                                                            "Failed to set executable permissions on binary".red().bold(),
+                                                            e
+                                                        );
+                                                        exit(1);
                                                     }
                                                 }
                                             }
                                             Err(e) => {
-                                                eprintln!("{}: {}", "Failed to write package".red().bold(), e);
+                                                eprintln!(
+                                                    "{}: {}",
+                                                    "Failed to rename package".red().bold(),
+                                                    e
+                                                );
                                                 exit(1);
                                             }
                                         }
                                     }
-                                },
+                                }
                                 Err(e) => {
-                                    eprintln!("{}: {}", "Failed to download package".red().bold(), e);
+                                    eprintln!(
+                                        "{}: {}",
+                                        "Failed to download package".red().bold(),
+                                        e
+                                    );
                                     exit(1);
-                                },
+                                }
                             }
                         }
                     }
                 }
-                Err(e ) => {
+                Err(e) => {
                     eprintln!("{}: {}", "Failed to read package index".red().bold(), e);
                     exit(1);
                 }
