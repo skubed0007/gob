@@ -125,7 +125,7 @@ async fn main() {
                                                                 Ok(_) => println!("{}", "Icon downloaded successfully.".green().bold()),
                                                                 Err(e) => eprintln!("{}: {}", "Failed to download icon".red().bold(), e),
                                                             }
-                                                            println!("symlinks: {:?}", slinks);
+                                                            //println!("symlinks: {:?}", slinks);
                                                             let desktop_file_content = format!(
                                                                 "[Desktop Entry]\nVersion=1.0\nType=Application\nName={}\nExec={}\nIcon={}\nTerminal=false\nCategories=Utility;",
                                                                 pkginfo.name,
@@ -135,7 +135,7 @@ async fn main() {
                                                             
                                                             match fs::write(&desktop_file, &desktop_file_content) {
                                                                 Ok(_) => {
-                                                                    println!("{}", "Desktop entry created successfully!".green().bold());
+                                                                   // println!("{}", "Desktop entry created successfully!".green().bold());
                                                                     match tokio::process::Command::new("update-desktop-database")
                                                                         .arg("/usr/share/applications")
                                                                         .status()
