@@ -7,7 +7,7 @@
 ---
 install gob with the following command:
 ```bash
-curl -sSfL https://raw.githubusercontent.com/skubed0007/gob/main/install.sh | sh
+curl -sSfL https://raw.githubusercontent.com/skubed0007/gob/main/install.sh | sudo sh
 ```
 after installing gob please run the following command as your first command!
 ```bash
