@@ -58,8 +58,7 @@ pub fn help() {
 #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
 async fn main() {
     let args: Vec<String> = args().collect();
-
-    if args.len() < 1{
+    if args.len() <= 1{
         help();
         exit(1);
     }
