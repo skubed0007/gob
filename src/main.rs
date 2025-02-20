@@ -43,7 +43,42 @@ async fn main() {
                 eprintln!("└─ Unable to open package index file! Try fetching it first with \"gob fetch\" or \"gob update\". {}", "Error".red().bold());
             }
         }
-        "search" | "look" | "info" | "find" => {
+        "info" | "about" => {
+            if let Ok(mut pkgif) = File::open("gobbled.gob") {
+                let mut index = String::new();
+                if pkgif.read_to_string(&mut index).is_ok() {
+                    let pkg_index = parse_pkg_index::ppkgi(&index);
+                    println!("{}","┌[About packages]".green().bold());
+                    for pkg in &pkg_index {
+                        if search_terms.iter().any(|term| pkg.0.contains(term)) {
+                            println!("{}","├─[Package Info]".green().bold());
+                            println!("├─ Name:          {}", pkg.0.green().bold());
+                            println!("├─ Version:       {}", pkg.1.version.green().bold());
+                            println!("├─ Description:   {}", pkg.1.description.green().bold());
+                            println!("├─ Supports GUI:  {}", if pkg.1.gui { "Yes".green().bold() } else { "No".red().bold() });
+                            println!("├─ Binary Located at: {}", pkg.1.binary_at.join("\n\t\t      ").green().bold());
+                            println!("├─ Symlink it creates: {}", pkg.1.symlink_names.join(", ").green().bold());
+                            println!("├─ Icon URL:      {}", pkg.1.icon_at.green().bold());
+                        }
+                    }
+                    println!("{}","└[DONE!]".green().bold());
+                    let not_found: Vec<_> = search_terms.iter().filter(|term| !pkg_index.iter().any(|pkg| pkg.0.contains(*term))).collect();
+                    if !not_found.is_empty() {
+                        println!("{}", "┌[Following packages were not found!]".red().bold());
+                        for term in not_found {
+                            println!("├─ {}", term.red().bold());
+                        }
+                        println!("{}", "└[Please look online for correct package names or contact us!]".red().bold());
+                    }
+                } else {
+                    eprintln!("└─ Unable to read package index file! Try fetching it first with \"gob fetch\" or \"gob update\". {}", "Error".red().bold());
+                }
+            } else {
+                eprintln!("└─ Unable to open package index file! Try fetching it first with \"gob fetch\" or \"gob update\". {}", "Error".red().bold());
+                
+            }
+        }
+        "search" | "look" | "find" => {
             if let Ok(mut pkgif) = File::open("gobbled.gob") {
                 let mut index = String::new();
                 if pkgif.read_to_string(&mut index).is_ok() {
