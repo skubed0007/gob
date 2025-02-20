@@ -7,7 +7,7 @@
 ---
 install gob with the following command:
 ```bash
-curl -sSfL <link-to-gob-musl-binary> | sh
+curl -sSfL https://raw.githubusercontent.com/skubed0007/gob/main/install.sh | sh
 ```
 after installing gob please run the following command as your first command!
 ```bash
