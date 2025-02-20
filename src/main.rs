@@ -20,10 +20,49 @@ pub mod ndraey_dm_custom;
 pub mod parse_pkg_index;
 pub mod search;
 
+
+pub fn help() {
+    println!("{}", "┌[Gob Package Manager - Help]".white().bold());
+    println!("{}", "├─ Usage: gob <command> [options]".white());
+    println!("{}", "├─ Commands:".white().bold());
+    println!(
+        "{} {}",
+        "│   ├─ update".green().bold(),
+        "- Update the package index (fetches the latest index) along with packages themselves".white()
+    );
+    println!(
+        "{} {}",
+        "│   ├─ search <term>".green().bold(),
+        "- Search for packages".white()
+    );
+    println!(
+        "{} {}",
+        "│   ├─ info <package>".green().bold(),
+        "- Display package information".white()
+    );
+    println!(
+        "{} {}",
+        "│   ├─ install <package>".green().bold(),
+        "- Install a package".white()
+    );
+    println!(
+        "{} {}",
+        "│   └─ local-install".green().bold(),
+        "- Install package locally".white()
+    );
+    println!("{}", "└[For more info, try 'gob help <command>']".white().bold());
+}
+
+
 #[allow(unused)]
 #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
 async fn main() {
     let args: Vec<String> = args().collect();
+
+    if args.len() < 2{
+        help();
+        exit(1);
+    }
     let args = &args[1..];
     let cmd = &args[0];
     let mut search_terms: Vec<String> = args[1..].iter().map(|s| s.to_string()).collect();
@@ -103,6 +142,10 @@ async fn main() {
     add_gob_to_path_for_host(&host);
 
     match cmd.as_str() {
+        "help" | "h" => {
+            help();
+            exit(0);
+        }
         "update" => {
             println!(
                 "{}{}",
@@ -369,7 +412,10 @@ async fn main() {
                 }
             }
         }
-        _ => {}
+        _ => {
+            eprintln!("{}: {}\n{}", "Invalid command".red().bold(), cmd,"run \"gob help\" for more information");
+            exit(1);
+        }
     }
 }
 
